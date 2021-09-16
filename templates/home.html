@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+        *{
+            margin:5px;
+
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    {% if messages %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+		{% for message in messages %}
+			{{message}}
+		{% endfor %}
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	{% endif %}
+
+    
+    <table class="table">
+    <thead>
+    <th>Date</th>
+    <th>Morning</th>
+    <th>Afternoon</th>
+    <th>Evening</th>
+    </thead>
+    <tbody>
+    {%for date,v in data.items%}
+    <tr>
+        <td>{{date}}</td>
+        {%for part,time in v.items %}
+        <td>{%for t in time %}
+        <form method="post" style="display:inline">
+        {% csrf_token %}
+            <input class ="btn btn-sm btn-info" type="submit" value="{{t.time.time}}">
+            <input class ="btn btn-sm btn-info" name="slot" type="hidden" value="{{t.id}}">
+             </form>
+            {%endfor%}
+        </td>
+        {%endfor%}
+    </tr>
+   {%endfor%}
+    </tbody>
+</table>
+{% if request.user.is_manager %} 
+    <a href="{% url 'addApointment' %}" class="btn btn-sm btn-info">Add appointment</a>
+{%endif%}
+   
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>
